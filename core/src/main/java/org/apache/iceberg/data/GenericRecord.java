@@ -120,7 +120,7 @@ public class GenericRecord implements Record, StructLike {
     if (value == null || javaClass.isInstance(value)) {
       return javaClass.cast(value);
     } else {
-      throw new IllegalStateException("Not an instance of " + javaClass.getName() + ": " + value);
+      throw new IllegalStateException("Not an instance of " + javaClass.getName() + ": " + value + ": " + value.getClass().getName());
     }
   }
 

@@ -42,21 +42,38 @@ public final class IcebergDateObjectInspectorHive3 extends AbstractPrimitiveJava
 
   @Override
   public Date getPrimitiveJavaObject(Object o) {
-    if (o == null) {
-      return null;
-    }
-    LocalDate date = (LocalDate) o;
-    return Date.ofEpochDay(DateTimeUtil.daysFromDate(date));
+    if (o == null) return null;
+    else if (o instanceof LocalDate) return Date.ofEpochDay(DateTimeUtil.daysFromDate((LocalDate) o));
+    else if (o instanceof Integer) return Date.ofEpochDay((Integer) o);
+    else throw new IllegalStateException(String.format(
+              "Expected type of %s or %s, but found %s",
+              LocalDate.class,
+              Integer.class,
+              o.getClass().getName()));
   }
 
   @Override
   public DateWritableV2 getPrimitiveWritableObject(Object o) {
-    return o == null ? null : new DateWritableV2(DateTimeUtil.daysFromDate((LocalDate) o));
+    if (o == null) return null;
+    else if (o instanceof LocalDate) return new DateWritableV2(DateTimeUtil.daysFromDate((LocalDate) o));
+    else if (o instanceof Integer) return new DateWritableV2((Integer) o);
+    else throw new IllegalStateException(String.format(
+            "Expected type of %s or %s, but found %s",
+              LocalDate.class,
+              Integer.class,
+              o.getClass().getName()));
   }
 
   @Override
   public Object copyObject(Object o) {
-    return o == null ? null : new Date((Date) o);
+    if (o == null) return null;
+    else if (o instanceof Date) return new Date((Date) o);
+    else if (o instanceof Integer) return LocalDate.ofEpochDay((Integer) o);
+    else throw new IllegalStateException(String.format(
+              "Expected type of %s or %s, but found %s",
+              Date.class,
+              Integer.class,
+              o.getClass().getName()));
   }
 
 }
